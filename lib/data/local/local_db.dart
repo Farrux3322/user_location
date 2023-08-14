@@ -18,7 +18,7 @@ class LocalDatabase{
     if(_database !=null){
       return _database!;
     }else{
-      _database = await _initDB("defaultDatabase.db");
+      _database = await _initDB("user_addresses.db");
       return _database!;
     }
   }
@@ -35,48 +35,58 @@ class LocalDatabase{
     const doubleType = "REAL DEFAULT 0.0";
 
     await db.execute('''
-    CREATE TABLE ${LocationUserModelFields.userLocationTable}(
-    ${LocationUserModelFields.id} $idType,
-    ${LocationUserModelFields.lat} $doubleType,
-    ${LocationUserModelFields.long} $doubleType,
-    ${LocationUserModelFields.city} $textType,
-    ${LocationUserModelFields.created} $textType
+    CREATE TABLE ${UserAddressFields.userLocationTable}(
+    ${UserAddressFields.id} $idType,
+    ${UserAddressFields.lat} $doubleType,
+    ${UserAddressFields.long} $doubleType,
+    ${UserAddressFields.address} $textType,
+    ${UserAddressFields.created} $textType
     );
     ''');
   }
 //-------------------------------LocationUserModel SERVICE------------------------------------------
-  static Future<LocationUserModel> insertLocationUser(LocationUserModel locationUserModel) async {
+  static Future<UserAddress> insertUserAddress(UserAddress locationUserModel) async {
     final db = await getInstance.database;
     final int id = await db.insert(
-        LocationUserModelFields.userLocationTable, locationUserModel.toJson());
+        UserAddressFields.userLocationTable, locationUserModel.toJson());
 
 
     return locationUserModel.copyWith(id: id);
   }
 
-  static Future<List<LocationUserModel>> getAllLocationUser() async {
-    List<LocationUserModel> allLocationUser = [];
+  static Future<List<UserAddress>> getAllUserAddresses() async {
+    List<UserAddress> allLocationUser = [];
     final db = await getInstance.database;
-    allLocationUser = (await db.query(LocationUserModelFields.userLocationTable))
-        .map((e) => LocationUserModel.fromJson(e))
+    allLocationUser = (await db.query(UserAddressFields.userLocationTable))
+        .map((e) => UserAddress.fromJson(e))
         .toList();
 
     return allLocationUser;
   }
 
-  static deleteLocationUser(int id) async {
+  static deleteUserAddress(int id) async {
     final db = await getInstance.database;
     db.delete(
-      LocationUserModelFields.userLocationTable,
-      where: "${LocationUserModelFields.id} = ?",
+      UserAddressFields.userLocationTable,
+      where: "${UserAddressFields.id} = ?",
       whereArgs: [id],
     );
   }
 
-  static deleteAllLocationUsers() async {
+  static updateUserAddress(UserAddress userAddress) async {
+    final db = await getInstance.database;
+    db.update(
+      UserAddressFields.userLocationTable,
+      userAddress.toJson(),
+      where: "${UserAddressFields.id} = ?",
+      whereArgs: [userAddress.id],
+    );
+  }
+
+  static deleteAllAddresses() async {
     final db = await getInstance.database;
     db.delete(
-      LocationUserModelFields.userLocationTable,
+      UserAddressFields.userLocationTable,
     );
   }
 }

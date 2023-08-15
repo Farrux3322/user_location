@@ -136,7 +136,7 @@ class _UserLocationDetailScreenState extends State<UserLocationDetailScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 70),
               child: Text(
-                context.watch<AddressCallProvider>().scrolledAddressText,
+                context.watch<AddressCallProvider>().scrollAddressText,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: const TextStyle(

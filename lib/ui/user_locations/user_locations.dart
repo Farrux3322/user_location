@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:user_location/data/location_user_model.dart';
-
 import 'package:user_location/providers/user_locations_provider.dart';
 import 'package:user_location/ui/user_locations/widgets/user_location_detail_screen.dart';
 import 'package:user_location/ui/user_locations/widgets/user_location_update_screen.dart';

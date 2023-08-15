@@ -137,7 +137,7 @@ class _UserLocationUpdateScreenState extends State<UserLocationUpdateScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 70),
               child: Text(
-                context.watch<AddressCallProvider>().scrolledAddressText,
+                context.watch<AddressCallProvider>().scrollAddressText,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: const TextStyle(
@@ -168,7 +168,7 @@ class _UserLocationUpdateScreenState extends State<UserLocationUpdateScreen> {
                     id: widget.userAddress.id,
                     lat: currentCameraPosition.target.latitude,
                     long: currentCameraPosition.target.longitude,
-                    address: adp.scrolledAddressText,
+                    address: adp.scrollAddressText,
                     created: DateTime.now().toString(),
                   ),
                 );

@@ -18,6 +18,7 @@ class MapScreen extends StatefulWidget {
   @override
   State<MapScreen> createState() => _MapScreenState();
 }
+Set<Marker> markers = {};
 
 class _MapScreenState extends State<MapScreen> {
   late CameraPosition initialCameraPosition;
@@ -27,8 +28,14 @@ class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
+
+  initLocation(){
+    context.read<LocationProvider>().getLocation();
+  }
+
   @override
   void initState() {
+    initLocation();
     LocationProvider locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
 
@@ -93,6 +100,13 @@ class _MapScreenState extends State<MapScreen> {
       body: Stack(
         children: [
           GoogleMap(
+            onTap: (latLong){
+              context.read<AddressCallProvider>().clearMarker(latLong);
+            },
+            onLongPress: (event){
+              context.read<AddressCallProvider>().addTwoMarker(event);
+            },
+            markers: markers,
             onCameraMove: (CameraPosition cameraPosition) {
               currentCameraPosition = cameraPosition;
             },
@@ -139,7 +153,7 @@ class _MapScreenState extends State<MapScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 70),
               child: Text(
-                context.watch<AddressCallProvider>().scrolledAddressText,
+                context.watch<AddressCallProvider>().scrollAddressText,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: const TextStyle(
@@ -169,7 +183,7 @@ class _MapScreenState extends State<MapScreen> {
                       UserAddress(
                         lat: currentCameraPosition.target.latitude,
                         long: currentCameraPosition.target.longitude,
-                        address: adp.scrolledAddressText,
+                        address: adp.scrollAddressText,
                         created: DateTime.now().toString(),
                       ),
                     );
